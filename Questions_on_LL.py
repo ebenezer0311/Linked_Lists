@@ -119,3 +119,92 @@ class Solution:
 
         odd.next=even_head
         return head
+
+# 2095. Delete the Middle Node of a Linked List
+class Solution:
+    def deleteMiddle(self, head):
+        if head==None or head.next==None:
+
+            return None
+
+        if head.next.next==None:
+            curr=head
+            curr.next=curr.next.next
+            return head
+        fast,slow=head,head
+
+        while fast!=None and fast.next!=None:
+            slow=slow.next
+            fast=fast.next.next
+        # if slow.next!=None:
+        slow.val=slow.next.val
+        slow.next=slow.next.next
+        
+        return head
+
+# 148. Sort List
+class Solution:
+    def sortList(self, head):
+        if head==None or head.next==None : return head
+
+        mid,fast,slow=head,head,head
+
+        while fast!=None and fast.next!=None:
+            mid=slow
+            slow=slow.next
+            fast=fast.next.next
+        
+        mid.next=None
+        left=self.sortList(head)
+        right=self.sortList(slow)
+
+        return self.merge(left,right)
+    
+    def merge(self,left,right):
+        dummy=ListNode(0)
+        temp=dummy
+
+        while left!=None and right!=None:
+            if left.val<right.val:
+                temp.next=left
+                left=left.next
+            
+            else:
+                temp.next=right
+                right=right.next
+            
+            temp=temp.next
+        
+        if left!=None:
+            temp.next=left
+        if right!=None:
+            temp.next=right
+        
+        return dummy.next
+
+#160. Intersection of Two Linked Lists    
+class Solution:
+    def getL(self,head):
+        c=0
+        while head!=None:
+            c+=1
+            head=head.next
+        return c
+
+    def getIntersectionNode(self, headA,headB):
+        len1=self.getL(headA)
+        len2=self.getL(headB)
+
+        while len1>len2:
+            len1-=1
+            headA=headA.next
+        
+        while len2>len1:
+            len2-=1
+            headB=headB.next
+        
+        while headA!=headB:
+            headA=headA.next
+            headB=headB.next
+        
+        return headA
